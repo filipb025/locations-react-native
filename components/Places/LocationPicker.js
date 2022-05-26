@@ -6,7 +6,7 @@ import {getCurrentPositionAsync, useForegroundPermissions, PermissionStatus} fro
 import {getMapPreview} from "../../util/location";
 import {useNavigation, useRoute, useIsFocused} from "@react-navigation/native";
 
-function LocationPicker() {
+function LocationPicker({onPickLocation}) {
     const [pickedLocation, setPickedLocation] = useState()
     const isFocused = useIsFocused()
     const navigation = useNavigation()
@@ -20,6 +20,10 @@ function LocationPicker() {
             setPickedLocation(mapPickedLocation)
         }
     }, [route, isFocused])
+
+    useEffect(() => {
+        onPickLocation(pickedLocation)
+    }, [pickedLocation, onPickLocation])
 
     async function verifyPermission() {
         if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
